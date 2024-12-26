@@ -29,6 +29,24 @@ namespace MapProject.Application.Services
             }
 
         }
-       
+        
+
+        public async Task<Patient> GetById(long id)
+        {
+            try
+            {
+                return await _unitOfWork._Patients.GetByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when GetAsync {ex}", ex.Message);
+                throw;
+            }
+        }
+
+        public Task<IEnumerable<Patient>> GetSearchPagingAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

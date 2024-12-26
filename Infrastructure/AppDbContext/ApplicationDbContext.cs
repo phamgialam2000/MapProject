@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using MapProject.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MapProject.Infrastructure.AppDbContext;
 
-public partial class ApplicationDbContext : DbContext
+public partial class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    public ApplicationDbContext()
-    {
-    }
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
@@ -23,10 +20,12 @@ public partial class ApplicationDbContext : DbContext
         => optionsBuilder.UseSqlServer("Data Source=DESKTOP-3GADTG1;user id=sa;password=kocopass;Initial Catalog=DiseaseMap;Integrated Security=false;TrustServerCertificate=True;");
 
     public DbSet<Patient> Patients => Set<Patient>();
+    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
 
         modelBuilder.Entity<Patient>(entity =>

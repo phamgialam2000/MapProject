@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MapProject")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dace50953b36870c4cf98987a6d597b0690676a4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9490f04366a100e6c366419bfc7997756ab6d25d")]
 [assembly: System.Reflection.AssemblyProductAttribute("MapProject")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MapProject")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

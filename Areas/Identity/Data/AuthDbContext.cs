@@ -1,4 +1,4 @@
-﻿using MapProject.Areas.Identity.Data;
+﻿using MapProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

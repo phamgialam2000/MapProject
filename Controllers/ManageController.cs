@@ -1,42 +1,48 @@
 ﻿using MapProject.Application.Interfaces.Services;
-using MapProject.Application.Services;
 using MapProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
 namespace MapProject.Controllers
 {
-
-    public class HomeController : Controller
+    [Authorize]
+    public class ManageController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IPatientService _service;
 
         //ILogger<HomeController> logger, UserManager<ApplicationUser> userManager,
-        public HomeController(IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
+        public ManageController(IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
         {
             this._userManager = userManager;
             _service = serviceProvider.GetRequiredService<IPatientService>();
-
         }
 
         public async Task<IActionResult> Index()
         {
+            ViewData["UserID"] = _userManager.GetUserId(this.User);
             var result = await _service.GetAsync();
             return View(result);
         }
-
-
-        [Authorize]
-        public IActionResult Privacy()
+        public async Task<IActionResult> Add()
         {
-            ViewData["UserID"] = _userManager.GetUserId(this.User);
-            return View();
+            var result = await _service.GetAsync();
+            return View(result);
         }
-
+        public async Task<IActionResult> Edit(long id)
+        {
+            var result = await _service.GetById(id);
+            return View(result);
+        }
+        public async Task<IActionResult> Delete()
+        {
+            var result = await _service.GetAsync();
+            return View(result);
+        }
+       
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

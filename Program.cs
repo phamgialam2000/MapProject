@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MapProject.Data;
-using MapProject.Areas.Identity.Data;
 using MapProject.Models;
 using MapProject.Infrastructure.AppDbContext;
 using MapProject.Application.Interfaces.Repositories;
