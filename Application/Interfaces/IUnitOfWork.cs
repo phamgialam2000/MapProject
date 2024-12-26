@@ -1,6 +1,10 @@
-﻿namespace MapProject.Application.Interfaces
+﻿using MapProject.Application.Interfaces.Repositories;
+using MapProject.Application.Interfaces.Services;
+
+namespace MapProject.Application.Interfaces
 {
-    public class IUnitOfWork
+    public interface IUnitOfWork
     {
+        IPatientRepository _Patients { get; }
     }
 }

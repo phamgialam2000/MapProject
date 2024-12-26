@@ -1,4 +1,4 @@
-﻿@* @model IEnumerable<MapProject.Models.Patient>
+﻿@model IEnumerable<MapProject.Models.Patient>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,32 +16,15 @@
                 <tr>
                     <th>ID</th>
                     <th>Tên</th>
-                    <th>Vĩ độ</th>
-                    <th>Kinh độ</th>
-                    <th>Loại</th>
-                    <th>Cấp độ</th>
-                    <th>Nhóm</th>
-                    <th>Quận</th>
-                    <th>Ghi chú</th>
-                    <th>Địa chỉ</th>
-                    <th>Ngày</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var location in Model)
                 {
                     <tr>
-                        <td>@location.ID</td>
-                        <td>@location.NAME</td>
-                        <td>@location.LATITUDE</td>
-                        <td>@location.LONGITUDE</td>
-                        <td>@location.TYPE</td>
-                        <td>@location.LEVEL</td>
-                        <td>@location.GROUP</td>
-                        <td>@location.DISTRICT</td>
-                        <td>@location.NOTE</td>
-                        <td>@location.ADDRESS</td>
-                        <td>@location.DATE</td>
+                        <td>@location.Id</td>
+                        <td>@location.Name</td>
+ 
                     </tr>
                 }
             </tbody>
@@ -49,4 +32,3 @@
     </div>
 </body>
 </html>
- *@

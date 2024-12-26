@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MapProject.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+public class AuthDbContext : IdentityDbContext<ApplicationUser>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public AuthDbContext(DbContextOptions<AuthDbContext> options)
         : base(options)
     {
     }

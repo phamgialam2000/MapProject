@@ -1,38 +1,41 @@
-﻿using MapProject.Areas.Identity.Data;
+﻿using MapProject.Application.Interfaces.Services;
+using MapProject.Application.Services;
+using MapProject.Areas.Identity.Data;
 using MapProject.Models;
-using MapProject.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
 namespace MapProject.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly UserService _userService;
-       
-        public HomeController(ILogger<HomeController> logger, UserService userService, UserManager<ApplicationUser> userManager)
+        private readonly IPatientService _service;
+
+        //ILogger<HomeController> logger, UserManager<ApplicationUser> userManager,
+        public HomeController(IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
         {
-            _logger = logger;
             this._userManager = userManager;
-            _userService = userService;
-        }
-        
-        public async Task<IActionResult> Index()
-        {
-            ViewData["UserID"] = _userManager.GetUserId(this.User);
-            var locations = await _userService.GetAllLocationsAsync();
-            return View();
+            _service = serviceProvider.GetRequiredService<IPatientService>();
+
         }
 
-        
+        public async Task<IActionResult> Index()
+        {
+            var result = await _service.GetAsync();
+            return View(result);
+        }
+
+
         [Authorize]
         public IActionResult Privacy()
         {
+            ViewData["UserID"] = _userManager.GetUserId(this.User);
             return View();
         }
 

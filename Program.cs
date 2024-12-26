@@ -3,6 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using MapProject.Data;
 using MapProject.Areas.Identity.Data;
 using MapProject.Models;
+using MapProject.Infrastructure.AppDbContext;
+using MapProject.Application.Interfaces.Repositories;
+using MapProject.Infrastructure.Repositories;
+using MapProject.Application.Interfaces;
+using MapProject.Application.Interfaces.Services;
+using MapProject.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
@@ -12,7 +18,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddScoped<Patient>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

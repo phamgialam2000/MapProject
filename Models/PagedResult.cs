@@ -5,7 +5,7 @@ namespace MapProject.Models
 {
     public class PagedResult<T>
     {
-        public IEnumerable<T> Items { get; set; }  // Use generic type T for flexibility
+        public IEnumerable<T> Items { get; set; }
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public int TotalItems { get; set; }
