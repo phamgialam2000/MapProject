@@ -33,11 +33,12 @@
                         </thead>
                         <tbody>
                             @* @{ var i = (Model.CurrentPage - 1) * Model.PageSize; } *@
+                            @{var i = 0;}
                             @foreach (var item in Model)
                             {
-                                @* i++; *@
+                                i++;
                                 <tr>
-                                    @* <td>@i</td> *@
+                                    <td>@i</td>
                                     <td>@item.Name</td>
                                     <td>@item.Address</td>
                                     @{
