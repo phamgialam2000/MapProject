@@ -1,5 +1,172 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model MapProject.Models.Patient
+<style>
+    #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<div class="container">
+    <div class="row p-5">
+        <div class="card col-md-3 col-3 col-sm-3 p-3 mb-2">
+            @using (Html.BeginForm("Add", "Manage", FormMethod.Post))
+            {
+                @Html.HiddenFor(m => m.Id)
+                <div>
+                    <label>Ngày giờ</label>
+                    @Html.TextBoxFor(m => m.Date, new { @class = "form-control", @type = "datetime-local", @required = "required" })
+                </div>
+                <div>
+                    <label>Họ tên</label>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @required = "required" })
+                </div>
+
+                <div>
+                    <label>Địa chỉ</label>
+                    @Html.TextAreaFor(m => m.Address, new { @class = "form-control", @cols = "100", @rows = "8", @style = "width:100%;" })
+                </div>
+
+                @* <div>
+            <label>Quận</label>
+            @Html.DropDownListFor(
+            m => m.DISTRICT,
+            new SelectList(ViewBag.EnumDistrict, "Value", "Text"),
+            "Chọn nhóm",
+            new { @class = "form-control", @id = "cboDistrict", @required = "required" }
+            )
+            </div> *@
+                <div>
+                    <label>Quận</label>
+                    @Html.DropDownListFor(m => m.Group, new SelectList(new[] {
+                new { Value = "1", Text = "Quận 1" },
+                new { Value = "2", Text = "Quận 2" },
+                new { Value = "3", Text = "Quận 3" },
+                new { Value = "4", Text = "Quận 4" },
+                new { Value = "5", Text = "Quận 5" },
+                new { Value = "6", Text = "Quận 7" },
+                new { Value = "7", Text = "Quận 10" },
+                new { Value = "8", Text = "Quận Bình Thạnh" },
+                new { Value = "9", Text = "Quận Phú Nhuận" }
+                }, "Value", "Text"), "Chọn quận ", new { @class = "form-control", @id = "districtDropdown", @required = "required" })
+                </div>
+                <div>
+                    <label>Nhóm</label>
+                    @Html.DropDownListFor(m => m.Group, new SelectList(new[] {
+                new { Value = 1, Text = "Cấp độ 1" },
+                new { Value = 2, Text = "Cấp độ 2" },
+                new { Value = 3, Text = "Cấp độ 3" }
+                }, "Value", "Text"), "Chọn nhóm", new { @class = "form-control", @id = "groupDropdown", @required = "required" })
+                </div>
+
+                <div>
+                    <label>Cấp độ</label>
+                    @Html.TextBoxFor(m => m.Level, new { @class = "form-control", @id = "levelInput", @readonly = "readonly" })
+                </div>
+                <div>
+                    <label>Ghi chú</label>
+                    @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
+                </div>
+                <div>
+                    <label>Kinh độ</label>
+                    @Html.TextBoxFor(m => m.Longitude, new { @class = "form-control", @id = "lng", @readonly = "readonly", @required = "required" })
+                </div>
+
+                <div>
+                    <label>Vĩ độ</label>
+                    @Html.TextBoxFor(m => m.Latitude, new { @class = "form-control", @id = "lat", @readonly = "readonly", @required = "required" })
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-success mx-2">Lưu</button>
+                    <a href="@Url.Action("Index", "Manage")" class="btn btn-secondary mx-2">Trở về</a>
+                </div>
+            }
+        </div>
+        <div class="col-md-9 col-9 col-sm-9">
+            <div id="viewDiv"></div>
+        </div>
+        <div id="info">
+            <span id="longitude">0</span>
+            <span>,</span>
+            <span id="latitude">0</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("groupDropdown").addEventListener("change", function () {
+        const groupValue = this.value;
+        const levelInput = document.getElementById("levelInput");
+        if (groupValue === "1") {
+            levelInput.value = "Mức độ 1";
+            levelInput.setAttribute("readonly", "readonly");
+        } else if (groupValue === "2") {
+            levelInput.value = "Mức độ 2";
+            levelInput.removeAttribute("readonly");
+        } else if (groupValue === "3") {
+            levelInput.value = "Mức độ 3";
+            levelInput.removeAttribute("readonly");
+        } else {
+            levelInput.value = "";
+            levelInput.removeAttribute("readonly");
+        }
+    });
+
+    require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/Graphic"
+    ], (Map, MapView, Graphic) => {
+        const map = new Map({
+            basemap: "topo-vector"
+        });
+
+        const view = new MapView({
+            container: "viewDiv",
+            map: map,
+            center: [106.708549, 10.8032988],
+            zoom: 12
+        });
+
+        view.when(() => {
+            view.ui.add("info", "top-right");
+
+            view.on("click", (event) => {
+                const longitude = event.mapPoint.longitude.toFixed(5);
+                const latitude = event.mapPoint.latitude.toFixed(5);
+
+                document.getElementById("longitude").innerText = longitude;
+                document.getElementById("latitude").innerText = latitude;
+
+                lng.value = longitude;
+                lat.value = latitude;
+
+                const point = {
+                    type: "point",
+                    longitude: longitude,
+                    latitude: latitude
+                };
+
+                const markerSymbol = {
+                    type: "picture-marker",
+                    url: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+                    width: "24px",
+                    height: "24px"
+                };
+
+                const pointGraphic = new Graphic({
+                    geometry: point,
+                    symbol: markerSymbol
+                });
+
+                view.graphics.removeAll();
+                view.graphics.add(pointGraphic);
+            });
+        });
+    });
+
+
+</script>
+
+

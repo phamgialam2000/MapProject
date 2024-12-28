@@ -7,11 +7,13 @@ namespace MapProject.Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
-        public IPatientRepository _Patients { get; }
-        public UnitOfWork(ApplicationDbContext context, IPatientRepository patient)
+        public IPatientRepository _patients { get; }
+        public IChartRepository _charts { get; }
+        public UnitOfWork(ApplicationDbContext context, IPatientRepository patient, IChartRepository chart)
         {
             _context = context;
-            _Patients = patient;
+            _patients = patient;
+            _charts = chart;
         }
         public async Task CommitAsync()
         {

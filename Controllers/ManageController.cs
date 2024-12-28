@@ -1,5 +1,7 @@
-﻿using MapProject.Application.Interfaces.Services;
+﻿using Azure.Core;
+using MapProject.Application.Interfaces.Services;
 using MapProject.Models;
+using MapProject.ViewModel.Patient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,23 +28,68 @@ namespace MapProject.Controllers
             var result = await _service.GetAsync();
             return View(result);
         }
-        public async Task<IActionResult> Add()
+        [HttpGet]
+        public IActionResult Add()
         {
-            var result = await _service.GetAsync();
-            return View(result);
+            return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> Add(PatientRequest request)
+        {
+            try
+            {
+                var result = await _service.Create(request);
+                if (result != null)
+                {
+                    TempData["SuccessMessage"] = "Thêm mới thành công!";
+                    return RedirectToAction("Index");
+
+                }
+                ModelState.AddModelError("", "Thêm mới thất bại.");
+                return View(request);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Đã xảy ra lỗi trong quá trình xử lý.");
+                return View(request);
+            }
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
-            var result = await _service.GetById(id);
+            var result = await _service.FindAsync(id);
             return View(result);
         }
-        public async Task<IActionResult> Delete()
+        [HttpPost]
+        public async Task<IActionResult> Edit(PatientRequest request)
         {
-            var result = await _service.GetAsync();
-            return View(result);
+            try
+            {
+                var result = await _service.Update(request);
+                if (result != null)
+                {
+                    TempData["SuccessMessage"] = "Cập nhật thành công!";
+                    return RedirectToAction("Edit", new { id = request.Id });
+
+                }
+                ModelState.AddModelError("", "Cập nhật thất bại.");
+                return View(request);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Đã xảy ra lỗi trong quá trình xử lý.");
+                return View(request);
+            }
         }
-       
-        
+
+        public async Task<IActionResult> Delete(PatientRequest request)
+        {
+            var res = await _service.SoftDelete(request.Id);
+            return RedirectToAction("Index");
+
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -126,10 +126,10 @@
         console.log("You clicked on:", item);
         pointSearch = {
             type: "point",
-            longitude: item.LONGITUDE,
-            latitude: item.LATITUDE,
+            longitude: item.Longitude,
+            latitude: item.Latitude,
             Name: "Bệnh nhân",
-            Location: item?.NAME,
+            Location: item?.Name,
             symbol: {
                 type: "picture-marker",
                 url: "https://static-00.iconduck.com/assets.00/map-marker-icon-171x256-xkl73sge.png",
@@ -138,9 +138,11 @@
             },
             popupTemplate: {
                 title: item.NAME,
-                content: `Vị trí nhà bệnh nhân: <b>${item?.ADDRESS}</b>.<br>
-                           Cấp độ bệnh: <b>${item?.LEVEL}</b>.<br>
-                           Ghi chú: <b>${item?.NOTE}</b>.<br>`
+                content: `Vị trí nhà bệnh nhân: <b>${item?.Address ?? 'Chưa cập nhật'}</b>.<br>
+                           Ngày sinh: <b>${item?.Dateofbirth ?? 'Chưa cập nhật'}</b>.<br>
+                               Số điện thoại: <b>${item?.Phone ?? 'Chưa cập nhật'}</b>.<br>
+                               Cấp độ bệnh: <b>${item?.Level ?? 'Chưa cập nhật'}</b>.<br>
+                               Ghi chú: <b>${item?.Note ?? 'Chưa cập nhật'}</b>.<br>`
             }
         };
         MapInit(pointSearch);
@@ -157,8 +159,8 @@
 
     function showPosition(position) {
         let item = {
-            LATITUDE: position.coords.latitude,
-            LONGITUDE: position.coords.longitude
+            Latitude: position.coords.latitude,
+            Longitude: position.coords.longitude
         }
         handleItemClick(item);
 

@@ -5,6 +5,9 @@ namespace MapProject.Application.Interfaces
 {
     public interface IUnitOfWork
     {
-        IPatientRepository _Patients { get; }
+        IPatientRepository _patients { get; }
+        IChartRepository _charts { get; }
+        Task CommitAsync();
+        Task RollBackAsync();
     }
 }

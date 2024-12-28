@@ -1,1 +1,67 @@
-﻿
+﻿@model IEnumerable<object>
+
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<style>
+    .canvasjs-chart-credit {
+        display: none;
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var chartData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+
+        const vietnameseMonths = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"];
+
+        var dataSeries = chartData.map(levelData => ({
+            type: "splineArea",
+            showInLegend: true,
+            name: levelData.name,
+            dataPoints: levelData.dataPoints.map(dp => ({
+                x: new Date(dp.x),
+                y: dp.y
+            }))
+        }));
+
+        // Render Chart
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Biểu đồ thống kê ca bệnh"
+            },
+            axisX: {
+                labelFormatter: function (e) {
+                    var date = e.value;
+                    return `${vietnameseMonths[date.getMonth()]} ${date.getFullYear()}`;
+                }
+            },
+            axisY: {
+                title: "Số lượng ca bệnh"
+            },
+            toolTip: {
+                shared: true,
+                contentFormatter: function (e) {
+                    const vietnameseMonths = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
+                    var content = `<strong>${vietnameseMonths[e.entries[0].dataPoint.x.getMonth()]} ${e.entries[0].dataPoint.x.getFullYear()}</strong><br/>`;
+                    e.entries.forEach(function (entry) {
+                        content += `${entry.dataSeries.name}: ${entry.dataPoint.y} ca bệnh<br/>`;
+                    });
+                    return content;
+                }
+            },
+            legend: {
+                cursor: "pointer",
+                itemclick: function (e) {
+                    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                        e.dataSeries.visible = false;
+                    } else {
+                        e.dataSeries.visible = true;
+                    }
+                    chart.render();
+                }
+            },
+            data: dataSeries
+        });
+
+        chart.render();
+    });
+</script>

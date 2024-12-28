@@ -1,12 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MapProject.Application.Interfaces.Services;
+using MapProject.Models;
+using MapProject.ViewModel.Patient;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MapProject.Controllers
 {
     public class ChartController : Controller
     {
-        public IActionResult Index()
+        private readonly IChartService _service;
+
+        public ChartController(IServiceProvider serviceProvider)
         {
-            return View();
+            _service = serviceProvider.GetRequiredService<IChartService>();
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var res = await _service.GetStatisticsAsync();
+            return View(res);
         }
     }
 }

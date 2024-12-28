@@ -1,4 +1,8 @@
 ﻿@model  MapProject.Models.Patient
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
 <style>
     #viewDiv {
         padding: 0;
@@ -52,7 +56,7 @@
                 new { Value = "7", Text = "Quận 10" },
                 new { Value = "8", Text = "Quận Bình Thạnh" },
                 new { Value = "9", Text = "Quận Phú Nhuận" }
-                }, "Value", "Text"), "Chọn quận ", new { @class = "form-control", @id = "groupDropdown", @required = "required" })
+                }, "Value", "Text"), "Chọn quận ", new { @class = "form-control", @id = "districtDropdown", @required = "required" })
                 </div>
                 <div>
                     <label>Nhóm</label>

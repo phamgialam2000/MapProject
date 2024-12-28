@@ -1,7 +1,10 @@
-﻿using MapProject.Application.Interfaces.Repositories;
+﻿using Azure.Core;
+using MapProject.Application.Interfaces;
+using MapProject.Application.Interfaces.Repositories;
 using MapProject.Data;
 using MapProject.Infrastructure.AppDbContext;
 using MapProject.Models;
+using MapProject.ViewModel.Patient;
 using Microsoft.EntityFrameworkCore;
 
 namespace MapProject.Infrastructure.Repositories
@@ -14,27 +17,42 @@ namespace MapProject.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<Patient>> GetAllAsync()
+        public async Task<IEnumerable<Patient>> GetAsync()
         {
-            var result = await _context.Patients.ToListAsync();
+            var result = await _context.Patients.Where(x=>x.Isdelete == false).ToListAsync();
             return result;
         }
 
-        public async Task<Patient> GetByIdAsync(long id)
+        public async Task<Patient> FindAsync(long id)
         {
-            var result = await _context.Patients.FirstOrDefaultAsync(r => r.Id == id);
-            return result;
+            var result = await _context.Patients.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
+            return result ?? throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(Patient entity)
+        public async Task<Patient> CreateAsync(Patient entity)
         {
-            throw new NotImplementedException();
+            await _context.Patients.AddAsync(entity);
+            return entity;
+
+        }
+        public void UpdateAsync(Patient entity)
+        {
+            _context.Patients.Update(entity);
         }
 
-        public Task DeleteAsync(long id)
+        public void Delete(Patient entity)
         {
-            throw new NotImplementedException();
+            _context.Patients.Remove(entity);   
         }
 
+        public async Task SoftDelete(int id)
+        {
+            var entity = await _context.Patients.FindAsync(id);
+            if (entity == null) throw new KeyNotFoundException("Patient not found.");
+
+            entity.Isdelete = true;
+
+            _context.Patients.Update(entity);
+        }
     }
 }

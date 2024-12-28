@@ -26,4 +26,10 @@ public partial class Patient
     public string? Date { get; set; }
 
     public int? District { get; set; }
+
+    public string? Dateofbirth { get; set; }
+
+    public string? Phone { get; set; }
+
+    public bool? Isdelete { get; set; }
 }
