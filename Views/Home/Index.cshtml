@@ -67,7 +67,7 @@
         <button id="toggle-cluster" class="esri-button">Lọc</button>
     </div>
     <div id="legendDiv"></div>
-</div>
+</div> 
 
 <script>
     var pointSearch = {};
@@ -667,26 +667,26 @@
         ) {
 
             const layer = new FeatureLayer({
-                //            url: {}
-                //,
-                //            title: "Places of worship",
-                //            outFields: ["name", "religion", "denomination"],
-                //            popupTemplate: {
-                //                title: "{name}",
-                //                content: [
-                //                    {
-                //                        type: "fields",
-                //                        fieldInfos: [
-                //                            {
-                //                                fieldName: "religion"
-                //                            },
-                //                            {
-                //                                fieldName: "denomination"
-                //                            }
-                //                        ]
-                //                    }
-                //                ]
-                //            }
+                           url: {}
+                ,
+                           title: "Places of worship",
+                           outFields: ["name", "religion", "denomination"],
+                           popupTemplate: {
+                               title: "{name}",
+                               content: [
+                                   {
+                                       type: "fields",
+                                       fieldInfos: [
+                                           {
+                                               fieldName: "religion"
+                                           },
+                                           {
+                                               fieldName: "denomination"
+                                           }
+                                       ]
+                                   }
+                               ]
+                           }
             });
 
             const map = new Map({
@@ -783,12 +783,12 @@
                         [
                             {
                                 type: "text", // TextContentElement
-                                text: "This cluster represents {cluster_count} {GROUP} flight.<br>The predominance value is <B><I>{cluster_type_classification}", //Use the predominance value using the format given
+                                text: "Khu vực gồm {GROUP} ca bệnh.<br>Vui lòng xem chi tiết tại <b>Duyệt đối tượng</b>", //Use the predominance value using the format given
                             }, {
                                 type: "media", // MediaContentElement
                                 mediaInfos: [
                                     {
-                                        title: "<b>Count by Classfication</b>",
+                                        title: "<b>Số liệu</b>",
                                         type: "pie-chart",
                                         caption: "",
                                         value: {
@@ -1054,7 +1054,6 @@
 
             map.add(graphicsLayer);
             map.add(featureLayer);
-
         });
 
     }

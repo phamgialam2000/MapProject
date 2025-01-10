@@ -1,5 +1,5 @@
-﻿@model List<MapProject.Models.Patient>
-
+﻿@using MapProject.ViewModel.Support
+@model SupportRequest
 <input type="checkbox" id="check">
 <label for="check">
     <i class="fas fa-bars" id="btn"></i>
@@ -8,21 +8,20 @@
 <div class="sidebar">
     <header>Chức năng</header>
     <ul>
-      
         <a asp-controller="Manage" asp-action="Index">
-            <i class="far fa-sliders-h"></i> Danh sách
+            <i class="fas fa-sliders-h"></i> Danh sách
         </a>
         <a asp-controller="Support" asp-action="List">
             <i class="far fa-envelope"></i> Hỗ trợ
         </a>
-      
+
     </ul>
 </div>
 <section>
     <div class="col-md-12 col-12 col-sm-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h4>Danh sách bệnh nhân</h4>
+                <h4>Danh sách hỗ trợ</h4>
                 <div>
                     <input type="text" id="searchBox" value="@ViewBag.SearchTerm" placeholder="Tìm kiếm tên..."
                            style="padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
@@ -31,23 +30,17 @@
                     </button>
                 </div>
             </div>
-            <div>
-                <a href="@Url.Action("Add", "Manage")" style="padding: 5px 10px; margin-left: 25px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">
-                    <i class="fas fa-plus"></i> Thêm mới
-                </a>
-            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th style="width: 5%;">STT</th>
-                                <th style="width: 20%;">Họ tên</th>
-                                <th>Địa chỉ</th>
-                                <th style="width: 15%;">Ngày tháng</th>
-                                <th style="width: 10%;">Mức độ</th>
-                                <th style="width: 12%;">Ghi chú</th>
-                                <th style="width: 11%;">Chức năng</th>
+                                <th style="width: 15%;">Họ tên</th>
+                                <th style="width: 10%;">Số điện thoại</th>
+                                <th style="width: 15%;">Email</th>
+                                <th>Thông tin hỗ trợ</th>
+                                <th style="width: 10%;">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,7 +48,7 @@
                             @{
                                 var i = 0;
                             }
-                            @foreach (var item in Model)
+                            @* @foreach (var item in Model)
                             {
                                 i++;
                                 <tr>
@@ -80,7 +73,7 @@
                                         <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-action" title="Delete" data-confirm="Are You Sure?|This action cannot be undone. Do you want to continue?" data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
-                            }
+                            } *@
                         </tbody>
                     </table>
                 </div>
@@ -99,13 +92,3 @@
         </div>
     </div>
 </section>
-
-<script>
-    function performSearch() {
-        const searchTerm = document.getElementById("searchBox").value;
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set("searchTerm", searchTerm); // Add searchTerm
-        urlParams.set("page", 1); // Reset to the first page
-        window.location.search = urlParams.toString(); // Navigate to the updated URL
-    }
-</script>

@@ -1,0 +1,41 @@
+﻿@using MapProject.ViewModel.Support
+@model SupportRequest
+
+<div class="container">
+    <h2 class="text-center">Gửi hỗ trợ đến chúng tôi</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <form asp-action="Index" method="post">
+        <div class="form-group">
+            <label for="Name">Tên</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="PhoneNumber">Số điện thoại</label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Địa chỉ email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Question">Thông tin hỗ trợ</label>
+            <textarea asp-for="Question" class="form-control"></textarea>
+            <span asp-validation-for="Question" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+    </form>
+</div>

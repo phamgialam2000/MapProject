@@ -1,5 +1,6 @@
 ﻿using MapProject.Application.Interfaces.Services;
 using MapProject.Models;
+using MapProject.ViewModel.Chart;
 using MapProject.ViewModel.Patient;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +18,15 @@ namespace MapProject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var res = await _service.GetStatisticsAsync();
-            return View(res);
+            var resByMonth = await _service.GetStatisticsAsync();
+            var resByDistric = await _service.GetStatisticsByDistrictAsync();
+            var viewModel = new ChartResponse
+            {
+                StatisticsByMonth = resByMonth,
+                StatisticsByDistrict = resByDistric
+            };
+
+            return View(viewModel);
         }
     }
 }

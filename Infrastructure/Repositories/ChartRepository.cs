@@ -3,13 +3,25 @@ using MapProject.Infrastructure.AppDbContext;
 using MapProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MapProject.Infrastructure.Repositories
 {
-    public class ChartRepository: IChartRepository
+    public class ChartRepository : IChartRepository
     {
         private readonly ApplicationDbContext _context;
-
+        private static readonly Dictionary<int, string> DistrictMapping = new Dictionary<int, string>
+        {
+            { 1, "Quận 1" },
+            { 2, "Quận 2" },
+            { 3, "Quận 3" },
+            { 4, "Quận 4" },
+            { 5, "Quận 5" },
+            { 6, "Quận 7" },
+            { 7, "Quận 10" },
+            { 8, "Quận Bình Thạnh" },
+            { 9, "Quận Phú Nhuận" }
+        };
         public ChartRepository(ApplicationDbContext context)
         {
             _context = context;
@@ -33,7 +45,7 @@ namespace MapProject.Infrastructure.Repositories
                     }
                     return null;
                 })
-                .Where(p => p != null) // Lọc bỏ các giá trị null
+                .Where(p => p != null)
                 .GroupBy(p => new { p.Level, Month = p.DateParsed.Month, Year = p.DateParsed.Year })
                 .Select(g => new
                 {
@@ -59,6 +71,36 @@ namespace MapProject.Infrastructure.Repositories
 
             return chartData;
         }
-       
+
+        public async Task<IEnumerable<object>> GetStatisticsByDistrict()
+        {
+            var patients = await _context.Patients
+                .Where(p => p.Isdelete == false && p.District.HasValue)
+                .ToListAsync();
+
+            var data = patients
+                .GroupBy(p => p.District.Value)
+                .Select(g => new
+                {
+                    DistrictId = g.Key,
+                    Count = g.Count()
+                })
+                .ToList();
+
+            // Ánh xạ mã quận thành tên quận
+            var chartData = data
+                .Select(d => new
+                {
+                    label = DistrictMapping.ContainsKey(d.DistrictId)
+                        ? DistrictMapping[d.DistrictId]
+                        : $"Quận {d.DistrictId}",
+                    y = d.Count
+                })
+                .ToList();
+
+            return chartData;
+        }
+
+
     }
 }

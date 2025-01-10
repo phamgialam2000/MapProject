@@ -1,0 +1,55 @@
+﻿using MapProject.Application.Interfaces.Services;
+using MapProject.Models;
+using MapProject.ViewModel.Support;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+
+namespace MapProject.Controllers
+{
+    public class SupportController : Controller
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IPatientService _service;
+
+        //ILogger<HomeController> logger, UserManager<ApplicationUser> userManager,
+        public SupportController(IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
+        {
+            this._userManager = userManager;
+            _service = serviceProvider.GetRequiredService<IPatientService>();
+
+        }
+
+        public async Task<IActionResult> Index()
+        {
+           
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Index(SupportRequest model)
+        {
+            if (ModelState.IsValid)
+            {
+                TempData["SuccessMessage"] = "Yêu cầu của bạn đã được gửi thành công.";
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        [Authorize]
+        public IActionResult List()
+        {
+            ViewData["UserID"] = _userManager.GetUserId(this.User);
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+       
+    }
+}

@@ -27,5 +27,18 @@ namespace MapProject.Application.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<object>> GetStatisticsByDistrictAsync()
+        {
+            try
+            {
+                return await _unitOfWork._charts.GetStatisticsByDistrict();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when GetStatisticsByDistrictAsync {ex}", ex.Message);
+                throw;
+            }
+        }
     }
 }
