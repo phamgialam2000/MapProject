@@ -1,11 +1,11 @@
 ﻿@using MapProject.ViewModel.Support
 @model SupportRequest
-<input type="checkbox" id="check">
+<input type="checkbox" id="check" checked>
 <label for="check">
     <i class="fas fa-bars" id="btn"></i>
     <i class="fas fa-times" id="cancel"></i>
 </label>
-<div class="sidebar">
+<div class="sidebar-mnger">
     <header>Chức năng</header>
     <ul>
         <a asp-controller="Manage" asp-action="Index">
@@ -37,7 +37,7 @@
                             <tr>
                                 <th style="width: 5%;">STT</th>
                                 <th style="width: 15%;">Họ tên</th>
-                                <th style="width: 10%;">Số điện thoại</th>
+                                <th style="width: 15%;">Số điện thoại</th>
                                 <th style="width: 15%;">Email</th>
                                 <th>Thông tin hỗ trợ</th>
                                 <th style="width: 10%;">Chức năng</th>

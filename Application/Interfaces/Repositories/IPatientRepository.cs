@@ -6,12 +6,13 @@ namespace MapProject.Application.Interfaces.Repositories
 {
     public interface IPatientRepository
     {
-        public Task<IEnumerable<Patient>> GetAsync();
-        public Task<Patient> FindAsync(long id);
-        public Task<Patient> CreateAsync(Patient entity);
-        public void UpdateAsync(Patient entity);
-        public void Delete(Patient entity);
-        public Task SoftDelete(int id);
+        Task<IEnumerable<Patient>> GetAsync();
+        Task<Patient> FindAsync(long id);
+        Task<Patient> CreateAsync(Patient entity);
+        Task UpdateAsync(Patient entity);
+        Task DeleteAsync(Patient entity);
+        Task<bool> SoftDeleteAsync(int id);
+        Task<(List<PatientResponse>, int)> Search(PatientRequest request);
 
 
     }

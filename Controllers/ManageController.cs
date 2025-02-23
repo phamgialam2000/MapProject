@@ -5,6 +5,7 @@ using MapProject.ViewModel.Patient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
 
 namespace MapProject.Controllers
@@ -22,12 +23,31 @@ namespace MapProject.Controllers
             _service = serviceProvider.GetRequiredService<IPatientService>();
         }
 
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    ViewData["UserID"] = _userManager.GetUserId(this.User);
+        //    var result = await _service.Search();
+        //    return View(result);
+        //}
+
+        public async Task<ActionResult> Index(PatientRequest request)
         {
-            ViewData["UserID"] = _userManager.GetUserId(this.User);
-            var result = await _service.GetAsync();
-            return View(result);
+            if (request.Page <= 0) request.Page = 1;
+            if (request.PageSize <= 0) request.PageSize = 10;
+
+            var (patients, totalRecords) = await _service.GetSearchPagingAsync(request);
+
+            int totalPages = (int)Math.Ceiling((double)totalRecords / request.PageSize);
+            ViewBag.Name = request.Name;
+            ViewBag.Page = request.Page;
+            ViewBag.PageSize = request.PageSize;
+            ViewBag.MaxPage = totalPages;
+            ViewBag.TotalRecords = totalRecords;
+
+            return View(patients);
         }
+
+
         [HttpGet]
         public IActionResult Add()
         {
@@ -38,7 +58,7 @@ namespace MapProject.Controllers
         {
             try
             {
-                var result = await _service.Create(request);
+                var result = await _service.CreateAsync(request);
                 if (result != null)
                 {
                     TempData["SuccessMessage"] = "Thêm mới thành công!";
@@ -66,7 +86,7 @@ namespace MapProject.Controllers
         {
             try
             {
-                var result = await _service.Update(request);
+                var result = await _service.UpdateAsync(request);
                 if (result != null)
                 {
                     TempData["SuccessMessage"] = "Cập nhật thành công!";

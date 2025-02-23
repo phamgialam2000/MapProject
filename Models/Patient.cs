@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MapProject.Models;
 
-public partial class Patient
+public class Patient
 {
     public int Id { get; set; }
 

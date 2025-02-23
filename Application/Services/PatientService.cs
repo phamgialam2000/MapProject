@@ -21,7 +21,7 @@ namespace MapProject.Application.Services
             _logger = logger;
         }
 
-        public async Task<Patient> Create(PatientRequest request)
+        public async Task<Patient> CreateAsync(PatientRequest request)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace MapProject.Application.Services
         {
             try
             {
-                await _unitOfWork._patients.SoftDelete(id);
+                await _unitOfWork._patients.SoftDeleteAsync(id);
                 await _unitOfWork.CommitAsync();
                 return true;
             }
@@ -96,12 +96,13 @@ namespace MapProject.Application.Services
             }
         }
 
-        public Task<IEnumerable<Patient>> GetSearchPagingAsync()
+       
+        public async Task<(List<PatientResponse>, int)> GetSearchPagingAsync(PatientRequest request)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork._patients.Search(request);
         }
 
-        public async Task<Patient> Update(PatientRequest request)
+        public async Task<Patient> UpdateAsync(PatientRequest request)
         {
             try
             {
@@ -120,12 +121,13 @@ namespace MapProject.Application.Services
                 result.Dateofbirth = request.Dateofbirth;
                 result.Isdelete = false;
 
-                _unitOfWork._patients.UpdateAsync(result);
+                await _unitOfWork._patients.UpdateAsync(result);
                 await _unitOfWork.CommitAsync();
                 return result;
             }
             catch (Exception ex)
             {
+                 await _unitOfWork.RollBackAsync();
                 _logger.LogError($"Error Update {ex}", ex.Message);
                 throw;
             }

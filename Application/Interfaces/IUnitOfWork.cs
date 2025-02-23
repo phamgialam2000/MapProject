@@ -7,6 +7,7 @@ namespace MapProject.Application.Interfaces
     {
         IPatientRepository _patients { get; }
         IChartRepository _charts { get; }
+        ISupportRepository _supports { get; }
         Task CommitAsync();
         Task RollBackAsync();
     }

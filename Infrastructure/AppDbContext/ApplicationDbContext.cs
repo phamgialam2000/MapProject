@@ -14,6 +14,7 @@ public partial class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public virtual DbSet<Patient> Patient { get; set; }
+    public virtual DbSet<Support> Support { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -21,6 +22,7 @@ public partial class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     //=> optionsBuilder.UseSqlServer("Server=db12048.databaseasp.net; Database=db12048; User Id=db12048; Password=5Lw#Zr%8t2J@; Encrypt=True; MultipleActiveResultSets=True;Integrated Security=false;TrustServerCertificate=True;");
 
     public DbSet<Patient> Patients => Set<Patient>();
+    public DbSet<Support> Supports => Set<Support>();
     public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
 
 

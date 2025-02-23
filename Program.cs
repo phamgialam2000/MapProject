@@ -24,6 +24,9 @@ builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IChartService, ChartService>();
 builder.Services.AddScoped<IChartRepository, ChartRepository>();
 
+builder.Services.AddScoped<ISupportService, SupportService>();
+builder.Services.AddScoped<ISupportRepository, SupportRepository>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

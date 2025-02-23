@@ -7,12 +7,13 @@ namespace MapProject.Application.Interfaces.Services
 {
     public interface IPatientService
     {
-        Task<IEnumerable<Patient>> GetSearchPagingAsync();
         Task<IEnumerable<Patient>> GetAsync();
         Task<Patient> FindAsync(long id);
-        Task<Patient> Create(PatientRequest request);
-        Task<Patient> Update(PatientRequest request);
+        Task<Patient> CreateAsync(PatientRequest request);
+        Task<Patient> UpdateAsync(PatientRequest request);
         Task<bool> SoftDelete(int id);
+        Task<(List<PatientResponse>, int)> GetSearchPagingAsync(PatientRequest request);
+
 
     }
 }

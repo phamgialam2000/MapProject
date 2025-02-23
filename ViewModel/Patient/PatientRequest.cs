@@ -1,7 +1,9 @@
 ﻿namespace MapProject.ViewModel.Patient
 {
-    public class PatientRequest
+    public class PatientRequest : PagedResult
     {
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
         public int Id { get; set; }
 
         public double? Latitude { get; set; }
